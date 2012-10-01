@@ -19,11 +19,17 @@ module Sunspot
 
     class DataAccessor < Sunspot::Adapters::DataAccessor
       def load(id)
-        @clazz.find(id)
+        criteria(id).first
       end
 
       def load_all(ids)
-        @clazz.find(ids)
+        criteria(ids)
+      end
+
+      private
+
+      def criteria(id)
+        @clazz.criteria.id(id)
       end
     end
   end
