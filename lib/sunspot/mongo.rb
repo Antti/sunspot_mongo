@@ -13,17 +13,17 @@ module Sunspot
 
     class InstanceAdapter < Sunspot::Adapters::InstanceAdapter
       def id
-        @instance.id
+        @instance.id.to_s
       end
     end
 
     class DataAccessor < Sunspot::Adapters::DataAccessor
       def load(id)
-        @clazz.find(id)
+        @clazz.criteria.for_ids(Moped::BSON::ObjectId(id))
       end
 
       def load_all(ids)
-        @clazz.find(ids)
+        @clazz.criteria.in(:_id => ids.map {|id| Moped::BSON::ObjectId(id)})
       end
     end
   end
